@@ -70,7 +70,7 @@ async function main() {
     child.stdin.write(`${JSON.stringify({ jsonrpc: '2.0', id: 2, method: 'tools/call', params: { name: tool, arguments: args } })}\n`);
     child.stdin.end();
 
-    const callTimeout = tool === 'tm_push' ? 120000 : tool === 'run_command'
+    const callTimeout = tool === 'tm_push' ? 120000 : tool === 'tab_wait' ? 35000 : tool === 'run_command'
       ? Math.max(10000, Number(args.timeoutMs ?? 60000) + 5000)
       : 15000;
     const response = await responseLine(child, lines, callTimeout, 2);
