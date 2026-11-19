@@ -1,5 +1,7 @@
 param(
     [switch] $Once,
+    [switch] $Strict,
+    [switch] $StopAfterFirst,
     [switch] $Verbose,
     [int] $IntervalMs = 200,
     [int] $WindowSeconds = 0,
@@ -40,7 +42,7 @@ $remoteWord = Get-CnText @(0x8FDC, 0x7A0B, 0x8C03, 0x8BD5)
 $bodyWord = Get-CnText @(0x5E0C, 0x671B, 0x5B8C, 0x5168, 0x63A7, 0x5236)
 $titleWord = $allowWord + $remoteWord
 
-$bodyHints = @($bodyWord, 'wants full control', 'Allow remote debugging', $titleWord)
+$bodyHints = if ($Strict) { @('Allow remote debugging', $titleWord) } else { @($bodyWord, 'wants full control', 'Allow remote debugging', $titleWord) }
 $allowHints = @($allowWord, 'Allow')
 
 function Invoke-AllowOnce {
@@ -110,6 +112,7 @@ while ((Get-Date) -lt $deadline) {
     if ($r) {
         $count += 1
         Write-Log ("clicked: " + $r)
+        if ($StopAfterFirst) { break }
         $lastBeat = Get-Date
     } elseif (((Get-Date) - $lastBeat).TotalSeconds -ge 60) {
         $lastBeat = Get-Date
