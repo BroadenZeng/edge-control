@@ -59,5 +59,6 @@
 - [技能模板](skills/edge-control/SKILL.md)：安装本地技能。
 - [AGENTS.md](AGENTS.md)：AI 操作约定。
 - [AI-GUIDE.md](AI-GUIDE.md)：工具用法与排错。
+- [更新日志](CHANGELOG.md)：项目更新记录。
 - [MIT 许可证](LICENSE)：允许使用、修改和分发，须保留版权声明和许可证文本。
 
