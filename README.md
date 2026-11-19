@@ -1,11 +1,11 @@
 # Edge Control
 
-让支持运行本地命令的 AI 助手操作你**正在使用的 Microsoft Edge**：读取网页、打开页面、点击、截图，以及按需管理油猴脚本。它连接现有浏览器，因此可以使用现有的登录状态和扩展；它不会另行启动一个浏览器。
+让支持运行本地命令的 AI 助手操作你**正在使用的 Microsoft Edge**：读取网页、打开页面、点击、截图，以及按需管理油猴脚本。它使用现有的登录状态和扩展；如果 Edge 尚未运行，AI 可以正常打开 Edge。
 
 ## 开始使用
 
 1. 在 Windows 电脑上下载或克隆本项目，解压后记住文件夹位置。
-2. 正常打开 Edge，在地址栏输入 `edge://inspect`。选择 **Remote debugging（远程调试）**，允许当前浏览器实例远程调试。若没有这个选项，可在 `edge://settings/help` 更新 Edge 后再试；单位策略或浏览器配置也可能影响该选项。
+2. 正常打开 Edge（也可让 AI 使用 `edge_open` 打开），在地址栏输入 `edge://inspect`。选择 **Remote debugging（远程调试）**，允许当前浏览器实例远程调试。若没有这个选项，可在 `edge://settings/help` 更新 Edge 后再试；单位策略或浏览器配置也可能影响该选项。
 3. 在项目文件夹中打开 PowerShell，运行：
 
    ```powershell
