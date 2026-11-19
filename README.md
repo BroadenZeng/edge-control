@@ -14,7 +14,7 @@
 
 **方法一：创建本地技能**
 
-将下面的话发给 AI 助手。技能是一份让 AI 知道何时、如何使用本项目的本地说明；仓库中的代码仍需下载到电脑。
+将下面的话发给 AI 助手。技能是一份让 AI 知道何时、如何使用本项目的本地说明。创建一次后可以反复使用，适合经常操作 Edge；仓库代码仍需保存在电脑上。
 
 > 请根据 GitHub 上 BroadenZeng 的 [edge-control 仓库](https://github.com/BroadenZeng/edge-control)创建本地技能，用于控制当前 Edge。
 
