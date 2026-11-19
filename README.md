@@ -12,13 +12,11 @@
 
 4. 首次连接如出现 Edge 远程调试授权提示，请手动点击允许；首次连接成功后，后续重连会尝试自动处理此提示。
 
-运行需要 Windows 和 Node.js 22 或更高版本。缺少合适版本时，工具会尝试通过 `winget` 安装 Node.js LTS；也可从 [Node.js 官网](https://nodejs.org/zh-cn/download)安装。
-
-## 创建本地技能
-
-**将下面的话发给 AI 助手，即可让它根据仓库创建本地技能：**
+**也可以将下面的话发给 AI 助手，创建本地技能：**
 
 > 请根据 https://github.com/BroadenZeng/edge-control 创建本地技能，方便以后控制当前 Edge。
+
+运行需要 Windows 和 Node.js 22 或更高版本。缺少合适版本时，工具会尝试通过 `winget` 安装 Node.js LTS；也可从 [Node.js 官网](https://nodejs.org/zh-cn/download)安装。
 
 ## 功能
 
