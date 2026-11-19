@@ -1,6 +1,6 @@
 // 可移植配置：不写死任何用户路径，按操作系统和安装位置自动推断。
 // 任何一项都可以用环境变量覆盖：
-//   EDGE_PATH            浏览器可执行文件（Edge 或 Chrome 都行）
+//   EDGE_PATH            Edge 浏览器可执行文件
 //   EDGE_PROFILE         浏览器 user data 目录
 //   EDGE_ACTIVE_PORT_FILE  已开调试端口的实例写出的 DevToolsActivePort 路径
 //   CDP_PORT / MCP_HTTP_PORT
@@ -21,9 +21,6 @@ const edgeCandidates = [
   join(PF86, 'Microsoft', 'Edge', 'Application', 'msedge.exe'),
   join(PF, 'Microsoft', 'Edge', 'Application', 'msedge.exe'),
   join(LOCAL, 'Microsoft', 'Edge', 'Application', 'msedge.exe'),
-  join(PF, 'Google', 'Chrome', 'Application', 'chrome.exe'),
-  join(PF86, 'Google', 'Chrome', 'Application', 'chrome.exe'),
-  join(LOCAL, 'Google', 'Chrome', 'Application', 'chrome.exe'),
 ].filter(Boolean);
 
 const browser = edgeCandidates.find((p) => existsSync(p)) || edgeCandidates[0];
