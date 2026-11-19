@@ -14,15 +14,15 @@
 
 **方法一：创建本地技能**
 
-将下面的话发给 AI 助手。技能是一份让 AI 知道何时、如何使用本项目的本地说明。创建一次后可以反复使用，新开会话也可直接调用，适合经常操作 Edge；仓库代码仍需保存在电脑上。
+创建一次，新会话也可复用：
 
 > 请根据 GitHub 上 BroadenZeng 的 [edge-control 仓库](https://github.com/BroadenZeng/edge-control)创建本地技能，用于控制当前 Edge。
 
-让 AI 确认技能已创建并说明保存位置，然后按下面的步骤验证连接。
+创建后请按下方步骤验证连接。
 
 **方法二：直接使用项目文件夹**
 
-无需安装技能，支持访问本地文件并执行命令的 AI 助手都可以使用。
+无需安装技能，支持本地命令的 AI 助手可直接使用：
 
 [下载 ZIP](https://github.com/BroadenZeng/edge-control/archive/refs/heads/main.zip)，解压后将实际文件夹路径告诉 AI 助手，例如：
 
