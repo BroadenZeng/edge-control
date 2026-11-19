@@ -7,9 +7,13 @@ description: 控制用户正在使用的 Microsoft Edge，读取和操作指定�
 
 使用已安装的 Edge Control 连接用户正在使用的 Edge，保留现有登录状态和扩展。
 
+## 安装
+
+安装技能时，将本仓库保存在稳定的本地目录，把 `SKILL.md` 安装到目标客户端的技能目录，并将仓库绝对路径写入同一技能目录下的 `edge-control-path.txt`。不要将仓库路径写成其他用户电脑上的固定路径。
+
 ## 定位项目
 
-优先使用用户指定的项目目录或环境变量 `EDGE_CONTROL_HOME`。安装时可将项目的绝对路径写入本技能目录下的 `edge-control-path.txt`，之后从该文件读取；若技能仍在仓库的 `skills/edge-control` 中，也可使用其上两级目录。确认目录包含 `edge_mcp.ps1`、`AGENTS.md` 和 `AI-GUIDE.md`。找不到项目时，告知用户并确定项目位置，不要猜测或改用其他浏览器。
+优先使用用户指定的项目目录或环境变量 `EDGE_CONTROL_HOME`。从本技能目录下的 `edge-control-path.txt` 读取安装时记录的项目绝对路径；若技能仍在仓库的 `skills/edge-control` 中，也可使用其上两级目录。确认目录包含 `edge_mcp.ps1`、`AGENTS.md` 和 `AI-GUIDE.md`。找不到项目时，告知用户并确定项目位置，不要猜测或改用其他浏览器。
 
 ## 操作
 
