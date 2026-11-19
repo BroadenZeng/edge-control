@@ -10,27 +10,25 @@
 
 ## 开始使用
 
+### 1. 开启远程调试
+
 在 Edge 打开 `edge://inspect`，进入 **Remote debugging（远程调试）**，开启当前浏览器实例的远程调试。
 
-**方法一：创建本地技能**
+### 2. 选择使用方式
 
-安装一次，之后使用无需重复安装：
+**方式一：安装本地技能**
 
-> 请根据 GitHub 上 BroadenZeng 的 [edge-control 仓库](https://github.com/BroadenZeng/edge-control)创建本地技能，用于控制当前 Edge。
+安装一次，之后使用无需重复安装。将下面的话发给 AI 助手：
 
-创建后请按下方步骤验证连接。
+> 请根据 GitHub 上 BroadenZeng 的 [edge-control 仓库](https://github.com/BroadenZeng/edge-control)创建并安装本地技能，用于控制当前 Edge。
 
-**方法二：直接使用项目文件夹**
+**方式二：直接使用项目文件夹**
 
-无需安装技能，支持本地命令的 AI 助手可直接使用：
-
-[下载 ZIP](https://github.com/BroadenZeng/edge-control/archive/refs/heads/main.zip)，解压后将实际文件夹路径告诉 AI 助手，例如：
+无需安装技能，支持本地命令的 AI 助手可直接使用。[下载 ZIP](https://github.com/BroadenZeng/edge-control/archive/refs/heads/main.zip) 并解压，将实际文件夹路径告诉 AI 助手，例如：
 
 > 请使用 `D:\你的路径\edge-control` 控制当前 Edge。
 
-首次连接如出现 Edge 远程调试授权提示，请手动点击允许；首次连接成功后，后续重连会尝试自动处理此提示。
-
-### 验证连接
+### 3. 验证连接
 
 在项目文件夹中打开 PowerShell，或让 AI 运行：
 
@@ -38,7 +36,7 @@
 & .\edge_mcp.ps1 -Tool edge_status -Ensure
 ```
 
-返回 Edge 版本和标签页列表表示连接成功；后台服务响应不代表浏览器已连接。
+首次连接如出现 Edge 远程调试授权提示，请手动点击允许。返回 Edge 版本和标签页列表表示连接成功；后续重连会尝试自动处理授权提示。
 
 ## 功能
 
