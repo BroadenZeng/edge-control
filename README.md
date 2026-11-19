@@ -14,7 +14,7 @@
 
 **方法一：创建本地技能**
 
-创建一次，新会话也可复用：
+安装一次，之后使用无需重复安装：
 
 > 请根据 GitHub 上 BroadenZeng 的 [edge-control 仓库](https://github.com/BroadenZeng/edge-control)创建本地技能，用于控制当前 Edge。
 
