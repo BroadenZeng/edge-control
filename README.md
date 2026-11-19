@@ -16,7 +16,7 @@
 
 将下面的话发给 AI 助手。技能是一份让 AI 知道何时、如何使用本项目的本地说明；仓库中的代码仍需下载到电脑。
 
-> 请下载 https://github.com/BroadenZeng/edge-control ，并根据仓库内容创建本地技能，方便以后控制当前 Edge。
+> 请根据 GitHub 上 BroadenZeng 的 [edge-control 仓库](https://github.com/BroadenZeng/edge-control)创建本地技能，用于控制当前 Edge。
 
 让 AI 确认技能已创建并说明保存位置，然后按下面的步骤验证连接。
 
