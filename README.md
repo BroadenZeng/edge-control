@@ -22,6 +22,8 @@
 
 **方法二：直接使用项目文件夹**
 
+无需安装技能，支持访问本地文件并执行命令的 AI 助手都可以使用。
+
 [下载 ZIP](https://github.com/BroadenZeng/edge-control/archive/refs/heads/main.zip)，解压后将实际文件夹路径告诉 AI 助手，例如：
 
 > 请使用 `D:\你的路径\edge-control` 控制当前 Edge。
