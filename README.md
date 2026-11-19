@@ -4,7 +4,7 @@
 
 ## 环境要求
 
-- Windows、Windows PowerShell 5.1 或 PowerShell 7。
+- Windows、Windows PowerShell 5.1。PowerShell 7 可运行部分调用；自动授权使用 Windows PowerShell。
 - 包含 **Remote debugging（远程调试）** 选项的 Edge；找不到时请先更新浏览器。
 - 能运行本机命令的 AI 助手，以及 Node.js 22 或更高版本。缺少合适版本时，工具会尝试通过 `winget` 安装 Node.js LTS，也可从 [Node.js 官网](https://nodejs.org/zh-cn/download)安装。
 
@@ -20,7 +20,7 @@
 
 安装一次，之后使用无需重复安装。将下面的话发给 AI 助手：
 
-> 请根据 GitHub 上 BroadenZeng 的 [edge-control 仓库](https://github.com/BroadenZeng/edge-control)创建并安装本地技能，用于控制当前 Edge。
+> 请下载 GitHub 上 BroadenZeng 的 [edge-control 仓库](https://github.com/BroadenZeng/edge-control)，将 `skills/edge-control/SKILL.md` 安装为本地技能，并将项目绝对路径写入技能目录的 `edge-control-path.txt`。
 
 **方式二：直接使用项目文件夹**
 
@@ -56,6 +56,7 @@
 
 ## 资料
 
+- [技能模板](skills/edge-control/SKILL.md)：安装本地技能。
 - [AGENTS.md](AGENTS.md)：AI 操作约定。
 - [AI-GUIDE.md](AI-GUIDE.md)：工具用法与排错。
 - [MIT 许可证](LICENSE)：允许使用、修改和分发，须保留版权声明和许可证文本。
