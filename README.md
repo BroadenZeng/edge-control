@@ -20,7 +20,7 @@
 
 安装一次，之后使用无需重复安装。将下面的话发给 AI 助手：
 
-> 请下载 GitHub 上 BroadenZeng 的 [edge-control 仓库](https://github.com/BroadenZeng/edge-control)，将 `skills/edge-control/SKILL.md` 安装为本地技能，并将项目绝对路径写入技能目录的 `edge-control-path.txt`。
+> 请将 [edge-control](https://github.com/BroadenZeng/edge-control) 安装为本地技能。
 
 **方式二：直接使用项目文件夹**
 
