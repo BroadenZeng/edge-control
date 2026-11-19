@@ -44,6 +44,12 @@ Edge 尚未运行时，可先使用 `& .\edge_mcp.ps1 -Tool edge_open -Ensure` �
 
 - `edge_open`：Edge 未运行时正常启动；Edge 已运行时不额外打开窗口。
 - `edge_status` / `tabs_list`：浏览器状态及标签。
+- `tab_snapshot`：获取当前页面可见常用交互元素、CSS 选择器及有限的正文；不保证包含 iframe 或所有自定义组件。
+- `tab_action`：按唯一 CSS `selector` 或准确 `name` 点击、填写、选择、勾选；操作返回值并不证明提交成功。密码输入由用户处理。
+- `tab_wait`：等待指定选择器或文本；`tab_scroll`、`tab_key`、`tab_hover` 和 `tab_activate` 分别用于滚动、按键、悬停和激活标签页。
+- `tab_upload`：为唯一文件输入框设置已存在的绝对文件路径；网页真正上传的结果仍须核验。
+- `tab_monitor` 使用 `start/read/stop` 在常驻桥上按需记录控制台消息和弹窗；记录可能包含敏感信息，浏览器也可能返回开始监听前的缓存消息。`tab_dialog` 对监听到的对话框明确传入 `accept`。先开启监听再触发弹窗。
+- `tab_download_watch` 使用 `start/read/stop` 观察用户指定的下载目录，列出新文件候选项；它不能判断候选文件与网页的关联或是否完成。
 - `tab_open` / `tab_eval` / `tab_click` / `tab_screenshot`：打开、读取和操作网页；截图需确认文件存在且非空。
 - `tab_cookies`：读取 Cookie，包括 HttpOnly；仅在任务需要时筛选域名，不要输出凭据。
 - `tm_scripts` / `tm_verify` / `tm_push`：查看、比对和更新油猴脚本。比对和更新必须指定 `filePath` 和 `uuid`；更新会重载扩展，默认不刷新网页。若设置 `reloadTabs = $true`，必须指定 `tabFilter`，并先确认页面没有未保存内容。存储一致不代表网页已经运行新版本。
@@ -69,4 +75,15 @@ Edge 尚未运行时，可先使用 `& .\edge_mcp.ps1 -Tool edge_open -Ensure` �
 `tm_push` 直接修改油猴内部存储并尝试重载扩展；它依赖扩展的内部实现，版本变化可能导致失败。仅凭写入成功不能断言扩展重载成功或页面运行了新代码。实际执行前确认用户授权，并检查返回值。
 
 后台桥没有调用方身份认证，其他本机进程可尝试调用；拒绝带浏览器来源标头的请求不能替代认证。不要将服务暴露到网络。
+
+## 页面操作示例
+
+```powershell
+& .\edge_mcp.ps1 -Tool tab_snapshot -Ensure -Arguments @{ tab = '网页的唯一网址片段' }
+& .\edge_mcp.ps1 -Tool tab_action -Ensure -Arguments @{ tab = '网页的唯一网址片段'; name = '搜索'; action = 'fill'; value = '关键词' }
+& .\edge_mcp.ps1 -Tool tab_action -Ensure -Arguments @{ tab = '网页的唯一网址片段'; selector = '#submit'; action = 'click' }
+& .\edge_mcp.ps1 -Tool tab_wait -Ensure -Arguments @{ tab = '网页的唯一网址片段'; text = '搜索结果'; timeoutMs = 10000 }
+```
+
+每次查找元素应先读取当前页面，元素选择器可能随页面变化。提交、上传、下载和页面跳转须结合状态或实际文件再次核验；不要将 `dispatched` 视为任务成功。跨域 iframe、复杂组件、网页原生文件选择对话框和历史控制台日志可能不受支持。监听功能仅在常驻桥保持连接期间有效，浏览器或桥重启后需重新开启。
 
