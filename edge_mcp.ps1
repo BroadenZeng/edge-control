@@ -1,6 +1,6 @@
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet('edge_status', 'tabs_list', 'tab_open', 'tab_eval', 'tab_click', 'tab_screenshot', 'tab_cookies', 'tm_verify', 'tm_push', 'tm_scripts', 'fs_read', 'fs_write', 'run_command')]
+    [ValidateSet('edge_status', 'edge_open', 'tabs_list', 'tab_open', 'tab_eval', 'tab_click', 'tab_screenshot', 'tab_cookies', 'tm_verify', 'tm_push', 'tm_scripts', 'fs_read', 'fs_write', 'run_command')]
     [string] $Tool,
 
     [hashtable] $Arguments = @{},
