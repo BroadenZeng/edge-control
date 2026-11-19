@@ -9,6 +9,7 @@ import { spawn } from 'node:child_process';
 import { dirname, resolve } from 'node:path';
 
 import { CFG } from './config.mjs';
+import { extraTools, extraCall } from './browser-tools.mjs';
 const EDGE = CFG.browser;
 const PROFILE = CFG.userDataDir;
 const PORT = CFG.cdpPort;
@@ -44,6 +45,7 @@ async function openBrowserConnection() {
   const ws = new WebSocket(v.webSocketDebuggerUrl);
   let seq = 0;
   const pending = new Map();
+  const observers = new Set();
   const call = (method, params = {}, sessionId) =>
     new Promise((resolve, reject) => {
       const id = ++seq;
@@ -52,6 +54,7 @@ async function openBrowserConnection() {
     });
   ws.addEventListener('message', (e) => {
     const m = JSON.parse(e.data);
+    if (m.method) for (const observer of observers) { try { observer(m); } catch {} }
     if (m.id && pending.has(m.id)) {
       const p = pending.get(m.id);
       pending.delete(m.id);
@@ -70,6 +73,9 @@ async function openBrowserConnection() {
     ws.addEventListener('open', res, { once: true });
     ws.addEventListener('error', () => rej(new Error('CDP 连接失败：请确认 Edge 正在运行且已为当前实例启用远程调试；端口文件可能过期。先查看 AI-GUIDE.md 的排错步骤，不要删除浏览器配置或强制关闭 Edge。')), { once: true });
   });
+  call.subscribe = (fn) => { observers.add(fn); return () => observers.delete(fn); };
+  call.isOpen = () => ws.readyState === WebSocket.OPEN;
+  call.persistent = KEEP_CDP;
   return { call, ws };
 }
 
@@ -119,6 +125,7 @@ async function resolveTab(call, tab) {
 
 // ---------- 工具 ----------
 const TOOLS = [
+  ...extraTools,
   {
     name: 'edge_status',
     description: '检查受控 Edge 是否在跑、版本、当前标签页列表',
@@ -296,6 +303,7 @@ function runCommand(command, cwd, timeoutMs = 60000) {
 const text = (t) => ({ content: [{ type: 'text', text: typeof t === 'string' ? t : JSON.stringify(t, null, 2) }] });
 
 async function callTool(name, args = {}) {
+  if (extraTools.some((tool) => tool.name === name)) return text(await extraCall(name, args, { withBrowser, resolveTab }));
   switch (name) {
     case 'edge_status': {
       if (ACTIVE_PORT_FILE) return withBrowser(async (call) => {
