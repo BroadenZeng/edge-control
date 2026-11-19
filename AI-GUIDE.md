@@ -1,4 +1,6 @@
-# Edge 控制与排错指南
+# AI 操作与排错指南
+
+本文件面向能够执行本地命令的 AI 助手；用户首次使用说明见 [README.md](README.md)。
 
 ## 必须遵守
 
@@ -16,7 +18,7 @@
 & .\edge_mcp.ps1 -Tool edge_status -Ensure
 ```
 
-成功需查看返回的 JSON-RPC `result` 中的浏览器版本和标签页；出现 `error` 即未连接。`-Ensure` 复用或启动本目录常驻桥；PowerShell 包装负责传递参数。
+成功需查看返回的 JSON-RPC `result` 中的浏览器版本和标签页；出现 `error` 即未连接。首次调用可能触发 Node.js LTS 自动安装，安装失败时报告实际错误和手动安装地址。`-Ensure` 复用或启动本目录常驻桥；PowerShell 包装负责传递参数。
 
 `GET http://127.0.0.1:9333/health` 中 `ok` 只表示桥正在响应；`browserConnected` 反映桥是否持有已打开的连接，但仍应以 `edge_status` 实际结果为准。`kitDir` 标明桥来自哪个目录；新版本发现端口被旧版或别处的桥占用时会报错，不会静默转发。
 
@@ -45,4 +47,23 @@
 - `fs_read` / `fs_write` / `run_command`：以当前用户权限读取、写入本机文本文件或执行命令；按用户授权处理。
 
 可配置 `EDGE_PATH`、`EDGE_PROFILE`、`EDGE_ACTIVE_PORT_FILE`、`CDP_PORT`、`MCP_HTTP_PORT`、`TM_EXT_ID`。使用说明与本机情况冲突时，以只读检查和实际结果为准，不猜测、不反复操作。
+
+## 调用示例
+
+在项目目录运行；示例中的目标及路径须按用户任务替换。先用 `tm_scripts` 查找脚本 ID，必要时设置 `includeCode = $false`，避免不必要地返回源码。
+
+```powershell
+# 获取油猴脚本列表，不返回完整源码
+& .\edge_mcp.ps1 -Tool tm_scripts -Ensure -Arguments @{ includeCode = $false }
+
+# 将已安装脚本与本地文件比对
+& .\edge_mcp.ps1 -Tool tm_verify -Ensure -Arguments @{ uuid = '脚本ID'; filePath = 'C:\路径\脚本.user.js' }
+
+# 更新指定脚本；默认不刷新页面
+& .\edge_mcp.ps1 -Tool tm_push -Ensure -Arguments @{ uuid = '脚本ID'; filePath = 'C:\路径\脚本.user.js' }
+```
+
+`tm_push` 直接修改油猴内部存储并尝试重载扩展；它依赖扩展的内部实现，版本变化可能导致失败。仅凭写入成功不能断言扩展重载成功或页面运行了新代码。实际执行前确认用户授权，并检查返回值。
+
+后台桥没有调用方身份认证，其他本机进程可尝试调用；拒绝带浏览器来源标头的请求不能替代认证。不要将服务暴露到网络。
 
