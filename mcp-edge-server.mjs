@@ -10,6 +10,8 @@ import { dirname, resolve } from 'node:path';
 
 import { CFG } from './config.mjs';
 import { extraTools, extraCall } from './browser-tools.mjs';
+import { createConsentController } from './auto-consent.mjs';
+import { join } from 'node:path';
 const EDGE = CFG.browser;
 const PROFILE = CFG.userDataDir;
 const PORT = CFG.cdpPort;
@@ -39,10 +41,13 @@ async function cdpVersion() {
 const KEEP_CDP = !!ACTIVE_PORT_FILE && (process.env.EDGE_KEEP_CDP === '1' || HTTP_PORT > 0);
 let sharedBrowserPromise = null;
 let sharedBrowserSocket = null;
+const consent = createConsentController({ stateRoot: process.platform === 'win32' ? process.env.LOCALAPPDATA : '', kitDir: CFG.kitDir, profileDir: PROFILE, watcherPath: join(CFG.kitDir, 'auto-allow-debug.ps1') });
 
 async function openBrowserConnection() {
   const v = await cdpVersion();
-  const ws = new WebSocket(v.webSocketDebuggerUrl);
+  const stopWatcher = (ACTIVE_PORT_FILE && HTTP_PORT > 0) ? consent.start() : () => {};
+  let ws;
+  try { ws = new WebSocket(v.webSocketDebuggerUrl); } catch (e) { stopWatcher(); throw e; }
   let seq = 0;
   const pending = new Map();
   const observers = new Set();
@@ -69,10 +74,13 @@ async function openBrowserConnection() {
       sharedBrowserPromise = null;
     }
   });
-  await new Promise((res, rej) => {
-    ws.addEventListener('open', res, { once: true });
-    ws.addEventListener('error', () => rej(new Error('CDP 连接失败：请确认 Edge 正在运行且已为当前实例启用远程调试；端口文件可能过期。先查看 AI-GUIDE.md 的排错步骤，不要删除浏览器配置或强制关闭 Edge。')), { once: true });
-  });
+  try {
+    await new Promise((res, rej) => {
+      ws.addEventListener('open', res, { once: true });
+      ws.addEventListener('error', () => rej(new Error('CDP 连接失败：请确认 Edge 正在运行且已为当前实例启用远程调试；端口文件可能过期。先查看 AI-GUIDE.md 的排错步骤，不要删除浏览器配置或强制关闭 Edge。')), { once: true });
+    });
+    if (ACTIVE_PORT_FILE && HTTP_PORT > 0) consent.markConnected();
+  } finally { stopWatcher(); }
   call.subscribe = (fn) => { observers.add(fn); return () => observers.delete(fn); };
   call.isOpen = () => ws.readyState === WebSocket.OPEN;
   call.persistent = KEEP_CDP;
@@ -134,6 +142,11 @@ const TOOLS = [
   {
     name: 'edge_open',
     description: '如 Edge 未运行，正常启动已安装的 Microsoft Edge；不启用调试或创建独立配置',
+    inputSchema: { type: 'object', properties: {}, additionalProperties: false },
+  },
+  {
+    name: 'edge_auto_reset',
+    description: '重置自动授权状态，下次连接时需手动处理授权',
     inputSchema: { type: 'object', properties: {}, additionalProperties: false },
   },
   {
@@ -328,6 +341,8 @@ async function callTool(name, args = {}) {
       });
       return text({ launched: true, note: 'Edge started normally; remote debugging must be enabled separately and connection checked with edge_status.' });
     }
+    case 'edge_auto_reset':
+      return text({ removed: consent.reset(), note: 'The next new connection will not start automatic approval.' });
     case 'tabs_list':
       return text(await listTabs());
     case 'tab_open':
