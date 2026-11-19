@@ -4,12 +4,19 @@
 
 ## 开始使用
 
-1. **将下面的话发给 AI 助手，创建本地技能：**
+在 Edge 打开 `edge://inspect`，进入 **Remote debugging（远程调试）**，开启当前浏览器实例的远程调试。
 
-   > 请根据 https://github.com/BroadenZeng/edge-control 创建本地技能，方便以后控制当前 Edge。
+**方法一：创建本地技能**
 
-2. 在 Edge 打开 `edge://inspect`，进入 **Remote debugging（远程调试）**，开启当前浏览器实例的远程调试。
-3. 首次连接如出现 Edge 远程调试授权提示，请手动点击允许；首次连接成功后，后续重连会尝试自动处理此提示。
+> 请根据 https://github.com/BroadenZeng/edge-control 创建本地技能，方便以后控制当前 Edge。
+
+**方法二：直接使用项目文件夹**
+
+下载并解压本项目，将实际文件夹路径告诉 AI 助手，例如：
+
+> 请使用 `D:\你的路径\edge-control` 控制当前 Edge。
+
+首次连接如出现 Edge 远程调试授权提示，请手动点击允许；首次连接成功后，后续重连会尝试自动处理此提示。
 
 运行需要 Windows 和 Node.js 22 或更高版本。缺少合适版本时，工具会尝试通过 `winget` 安装 Node.js LTS；也可从 [Node.js 官网](https://nodejs.org/zh-cn/download)安装。
 
