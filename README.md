@@ -20,7 +20,7 @@
 
 安装一次，之后使用无需重复安装。将下面的话发给 AI 助手：
 
-> 请将 [edge-control](https://github.com/BroadenZeng/edge-control) 安装为本地技能。
+> 请将 GitHub 上 BroadenZeng 的 [edge-control 仓库](https://github.com/BroadenZeng/edge-control)安装为本地技能。
 
 **方式二：直接使用项目文件夹**
 
