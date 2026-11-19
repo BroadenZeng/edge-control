@@ -125,6 +125,11 @@ const TOOLS = [
     inputSchema: { type: 'object', properties: {}, additionalProperties: false },
   },
   {
+    name: 'edge_open',
+    description: '如 Edge 未运行，正常启动已安装的 Microsoft Edge；不启用调试或创建独立配置',
+    inputSchema: { type: 'object', properties: {}, additionalProperties: false },
+  },
+  {
     name: 'tabs_list',
     description: '列出全部页面标签',
     inputSchema: { type: 'object', properties: {}, additionalProperties: false },
@@ -301,6 +306,19 @@ async function callTool(name, args = {}) {
       const v = await cdpVersion();
       const tabs = await listTabs();
       return text({ browser: v.Browser, protocol: v['Protocol-Version'], port: PORT, tabs });
+    }
+    case 'edge_open': {
+      if (process.platform !== 'win32') throw new Error('edge_open is supported on Windows only');
+      const running = await runCommand('tasklist /FI "IMAGENAME eq msedge.exe" /NH', undefined, 10000);
+      if (running.code !== 0) throw new Error('Unable to check whether Edge is running');
+      if (/msedge\.exe/i.test(running.stdout)) return text({ launched: false, reason: 'Edge is already running' });
+      if (!CFG.browserFound || !/(?:^|[\\/])msedge\.exe$/i.test(EDGE)) throw new Error('Microsoft Edge executable not found; check EDGE_PATH');
+      await new Promise((resolveLaunch, rejectLaunch) => {
+        const child = spawn(EDGE, [], { detached: true, stdio: 'ignore', windowsHide: false });
+        child.once('error', rejectLaunch);
+        child.once('spawn', () => { child.unref(); resolveLaunch(); });
+      });
+      return text({ launched: true, note: 'Edge started normally; remote debugging must be enabled separately and connection checked with edge_status.' });
     }
     case 'tabs_list':
       return text(await listTabs());
