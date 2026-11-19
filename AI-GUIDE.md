@@ -12,6 +12,8 @@
 
 首次使用时，提示用户在 Edge 打开 `edge://inspect`，选择 **Remote debugging（远程调试）** 并自行启用当前浏览器实例的远程调试。如果找不到该选项，可能是 Edge 版本较旧：请用户打开 `edge://settings/help` 查看版本并更新，然后重新检查。浏览器策略或配置也可能影响该选项，不要仅凭缺少选项断定原因。
 
+Edge 尚未运行时，可先使用 `& .\edge_mcp.ps1 -Tool edge_open -Ensure` 正常打开 Edge；该操作不启用远程调试，也不表示连接成功。然后请用户按需开启远程调试并处理授权。
+
 在本文件夹 PowerShell 中执行：
 
 ```powershell
@@ -36,10 +38,11 @@
 4. 若 9333 被其他目录或旧版桥占用，核对健康响应、对应进程及其命令行，告知用户实际情况；仅在确定不会中断其他正在进行的任务且属于本任务授权时，才停止该旧桥，再启动本目录桥。不要结束 Edge。
 5. 首次连接可能出现授权弹窗；等待用户处理。`bridge did not start`、反复超时或连接失败时，不要无限重试；报告命令和错误并停下。用户未授权切换方式时不得换工具。
 
-`EDGE_PROFILE` 和 `EDGE_ACTIVE_PORT_FILE` 必须与要连接的实例一致；桥启动后改变环境变量不会自动改写已运行桥的配置。不要未经用户同意切换 profile。`/json/version` 在某些正常的默认配置场景中可能返回 404，不能据此断言 Edge 未运行。
+`EDGE_PROFILE` 和 `EDGE_ACTIVE_PORT_FILE` 必须与要连接的实例一致；桥启动后修改代码或环境变量不会自动更新已运行桥；若新工具提示 unknown tool，先确认无其他任务使用，按 README 停止旧桥，再重新调用以启动新桥。不要未经用户同意切换 profile。`/json/version` 在某些正常的默认配置场景中可能返回 404，不能据此断言 Edge 未运行。
 
 ## 功能与验证
 
+- `edge_open`：Edge 未运行时正常启动；Edge 已运行时不额外打开窗口。
 - `edge_status` / `tabs_list`：浏览器状态及标签。
 - `tab_open` / `tab_eval` / `tab_click` / `tab_screenshot`：打开、读取和操作网页；截图需确认文件存在且非空。
 - `tab_cookies`：读取 Cookie，包括 HttpOnly；仅在任务需要时筛选域名，不要输出凭据。
